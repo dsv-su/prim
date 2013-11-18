@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for the Prim tweeks module.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function prim_tweeks_uninstall() {
+  // Removes fix to allow form-admin to insert <br> in label and description
+  variable_del('webform_allowed_tags');
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function prim_tweeks_install() {
+  // Fix to allow form-admin to insert <br> in label and description.
+  // When updating webform module, check if this needs to be looked over.
+  variable_set('webform_allowed_tags', array('a', 'em', 'strong', 'code', 'img', 'br'));
+}

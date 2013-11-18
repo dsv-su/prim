@@ -1,0 +1,16 @@
+name = Prim Validate
+description = Validate school code
+configure = admin/prim/prim_validate
+package = DSV modules
+version = "7.x-1.0-dev"
+
+; Core version (required)
+core = 7.x
+
+; Loadable code files
+files[] = prim_validate.module
+files[] = prim_validate.admin.inc
+
+; Module dependencies
+dependencies[] = user
+

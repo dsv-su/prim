@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * @file
+ * This is the file description for Prim options module.
+ *
+ * Module file for Prim options module.This module adds
+ * select options to the webform module.
+ */
+
+
+/**
+ * Implementation of hook_webform_select_options_info().
+ *
+ * Define callbacks that can be used as select list options.
+ */
+function prim_options_webform_select_options_info() {
+  $items = array();
+
+  // Yes or no select options
+  $items['yes_no'] = array(
+    'title' => t('Ja eller nej'),
+    'options callback' => 'prim_options_yesno',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Gender select options
+  $items['gender'] = array(
+    'title' => t('Kön'),
+    'options callback' => 'prim_options_gender',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Date select options
+  $items['date'] = array(
+    'title' => t('Datum'),
+    'options callback' => 'prim_options_date',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Week number select options
+  $items['week'] = array(
+    'title' => t('Veckonummer'),
+    'options callback' => 'prim_options_weeks',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // month select options
+  $items['month'] = array(
+    'title' => t('Månad'),
+    'options callback' => 'prim_options_month',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // program select options
+  $items['program'] = array(
+    'title' => t('Program/komvux'),
+    'options callback' => 'prim_options_program',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Four grade select options
+  $items['four_grade'] = array(
+    'title' => t('Grader 4 alternativ'),
+    'options callback' => 'prim_options_four_grade',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Five requirements select options
+  $items['five_requirement_limit'] = array(
+    'title' => t('Kravgränser 5 alternativ'),
+    'options callback' => 'prim_options_requirement_limit',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Four evaluation levels select options
+  $items['four_evaluations'] = array(
+    'title' => t('Bedömning 4 alternativ'),
+    'options callback' => 'prim_options_four_evaluations',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // Four extension levels select options
+  $items['four_extension'] = array(
+    'title' => t('Utsträckning 4 alternativ'),
+    'options callback' => 'prim_options_four_extensions',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // 0 & 1 options
+  $items['zero_or_one'] = array(
+    'title' => t('0 eller 1'),
+    'options callback' => 'prim_options_zero_or_one',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  // 0, 1 and no answer options
+  $items['zero_one_no_answer'] = array(
+    'title' => t('0, 1 eller ej svarat'),
+    'options callback' => 'prim_options_zero_one_no_answer',
+    'file' => 'includes/prim_options.options.inc',
+  );
+
+  return $items;
+}

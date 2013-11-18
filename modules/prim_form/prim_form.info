@@ -1,0 +1,18 @@
+name = Prim form
+description = Set a teacher form to fill in before student result registration
+package = DSV modules
+version = "7.x-1.0-dev"
+
+configure = admin/prim/prim_form
+
+; Core version (required)
+core = 7.x
+
+; Loadable code files
+files[] = prim_form.module
+files[] = prim_form.install
+files[] = includes/prim_form.admin.inc
+
+; Module dependencies
+dependencies[] = webform
+dependencies[] = node_reference

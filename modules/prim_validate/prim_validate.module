@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * This is the file description for Prim Validate module.
+ *
+ * Allows admin to set a code that users need to create
+ * an account.
+ */
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function prim_validate_menu() {
+  $items['admin/prim/prim_validate'] = array(
+    'title' => 'Prim validate',
+    'description' => 'Configure Prim validate settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('prim_validate_admin_form'),
+    'access arguments' => array('administer Prim validate'),
+    'file' => 'prim_validate.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_permission().
+ */
+function prim_validate_permission() {
+  return array(
+    'administer Prim validate' => array(
+      'title' => t('Administer Prim validate'),
+      'description' => t('Configure school codes.'),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function prim_validate_form_user_register_form_alter(&$form, &$form_state) {
+
+  // Adds a password field to registration form
+  $form['prim_school_code'] = array(
+    '#type' => 'password',
+    '#title' => t('Provkod'),
+    '#description' => t('Ange den provkod som står i Lärarinformationen.'),
+    '#default_value' => '',
+    '#size' => 60,
+    '#maxlength' => 128,
+    '#required' => TRUE,
+    '#weight' => 0,
+  );
+
+  // Validate prim_school_code field
+  $form['#validate'][] = 'prim_validate_code_validate';
+}
+
+
+/**
+ * Validation function for prim_validate_form_user_register_form_alter()
+ */
+function prim_validate_code_validate($form, &$form_state) {
+  $salt = "(asd90.#02sA";
+
+  // Check school code value against the school code variable
+  if (md5($salt . $form_state['values']['prim_school_code']) != variable_get('prim_school_code', NULL)) {
+    // If it doesn't validate
+    form_set_error('prim_school_code', t('Du har angett fel provkod, försök igen.'), $limit_validation_errors = NULL);
+  }
+}
+

@@ -1,0 +1,10 @@
+name = Remove Menu Path
+description = Removes certain menu paths
+package = DSV modules
+version = "7.x-1.0-dev"
+
+; Core version
+core = 7.x
+
+; Loadable code files
+files[] = remove_menu_path.module

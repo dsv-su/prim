@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Install, schema and uninstall functions for the prim_form module.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function prim_form_uninstall() {
+  variable_del('prim_form_teacher_type');
+  variable_del('prim_form_student_type');
+  variable_del('prim_form_reference');
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function prim_form_install() {
+  drupal_set_message(t('You can now set prim forms'), 'status', $repeat = TRUE);
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function prim_form_schema() {
+  $schema['prim_form'] = array(
+    'description' => 'Table storing teachers form submissions.',
+    'fields' => array(
+      'aid' => array(
+        'description' => 'Primary ID field for the table. Not used for anything except internal lookups.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The user identifier of a teacher form.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'description' => 'The node identifier of a teacher form.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'sid' => array(
+        'description' => 'The submission identifier of a teacher form.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('aid'),
+  );
+  return $schema;
+}

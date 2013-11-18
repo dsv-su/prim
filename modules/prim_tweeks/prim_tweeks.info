@@ -1,0 +1,17 @@
+name = Prim tweeks
+description = Tweeks on the prim site
+package = DSV modules
+version = "7.x-1.0-dev"
+
+# configure = admin/prim/prim_tweeks
+
+; Core version (required)
+core = 7.x
+
+; Loadable code files
+files[] = prim_tweeks.module
+files[] = prim_tweeks.install
+
+; Module dependencies
+dependencies[] = webform
+dependencies[] = prim_form

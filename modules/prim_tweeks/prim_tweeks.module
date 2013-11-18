@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * This is the file description for Prim tweeks module.
+ *
+ * This module gather the tweeks made on the prim site
+ *
+ */
+
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function prim_tweeks_form_user_register_form_alter(&$form, &$form_state) {
+  $form['account']['name']['#title'] = t('Välj ett användarnamn');
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function prim_tweeks_form_user_login_block_alter(&$form, &$form_state) {
+  $form['name']['#title'] = t('Användarnamn');
+  $form['pass']['#title'] = t('Lösenord');
+}
+
+/**
+ * Implementation of hook_node_presave().
+ *
+ * Set default webform settings for new nodes.
+ */
+function prim_tweeks_node_presave($node) {
+
+  if ($node->is_new) {
+
+    if ($node->type == variable_get('prim_form_teacher_type', NULL) || 
+        $node->type == variable_get('prim_form_student_type', NULL)) {
+
+      $node->webform['allow_draft'] = 1;
+      $node->webform['auto_save'] = 1;
+    }
+  }
+}
