@@ -8,7 +8,7 @@ projects[drupal][download][type] = get
 projects[drupal][download][url] = http://ftp.drupal.org/files/projects/drupal-7.23.tar.gz
 
 ; include the d.o. profile base
-includes[] = "https://raw.github.com/omastercomau/primtest/master/drupal-org.make"
+includes[] = "https://raw.github.com/dsv-su/prim/master/drupal-org.make"
 
 ; Libraries
 
@@ -17,4 +17,4 @@ libraries[prim][directory_name] = "prim"
 libraries[prim][type] = "profile"
 libraries[prim][destination] = "../../profiles"
 libraries[prim][download][type] = "git"
-libraries[prim][download][url] = "https://github.com/omastercomau/primtest.git"
+libraries[prim][download][url] = "https://github.com/dsv-su/prim.git"
