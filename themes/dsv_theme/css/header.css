@@ -1,0 +1,186 @@
+/*
+  CSS for the DSV theme header + main menu
+*/
+
+#head {
+  background-color: #002E5F;
+  height: 200px;
+  padding-top: 25px;
+}
+
+.site_logotype {
+  margin-left: 24px;
+}
+
+.su_logotype {
+  margin-right: 24px;
+  float: right;
+}
+
+/* Top links */
+.top-links .title {
+  display: none;
+}
+
+.top-links ul {
+  line-height: 21px;
+  font-size: 80%;
+}
+
+.top-links li {
+  display: inline;
+  border-right: solid 1px #68819f;
+  padding-right: 7px;
+  margin-right: 5px;
+}
+
+.top-links li:last-child {
+  border-right: none;
+}
+
+.top-links a {
+  padding-right: 0;
+  margin-right: 0;
+}
+
+#top-links-right a {
+  padding-left: 0;
+}
+
+.top-links a:hover {
+  text-decoration: underline !important;
+}
+
+.top-links a:link, .top-links a:active, .top-links a:visited {
+  color: #FFFFFF;
+  font-size: 10px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: normal !important;
+  text-decoration: none;
+}
+
+#top-links-left {
+  float: left;
+  height: 22px;
+  background: none;
+  padding-left: 6px;
+}
+
+#top-links-right {
+  float: right;
+  text-align: right;
+  height: 22px;
+  background: none;
+  padding-right: 6px;
+}
+
+/* Main menu */
+#main-menu {
+  background-image: url(../img/head-menu-row-repeater.gif);
+  background-position: left bottom;
+  background-repeat: repeat-x;
+  height: 40px;
+  width: 100%;
+}
+
+#main-menu h2 {
+ display: none;
+}
+
+#main-menu-links {
+  height: 35px;
+  font-size: 130%;
+  float: left;
+  line-height: 37px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding-left: 0px;
+  width: 75%;
+}
+
+#main-menu-links ul {
+  padding-left: 0px;
+}
+
+#main-menu-links li {
+  float: left;
+  padding-right: 12px;
+  height: 35px;
+}
+
+#main-menu-links li.first {
+  margin-left: 6px;
+}
+
+#main-menu-links li.active {
+  background-image: url(../img/head-menu-row-active.png);
+  background-position: right bottom;
+  background-repeat: no-repeat;
+}
+
+#main-menu-links li.active-trail {
+  background-image: url(../img/head-menu-row-active.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+  font-weight: normal;
+}
+
+#main-menu-links a {
+  float: left;
+  color: #005b7f;
+  text-decoration: none;
+  padding: 0 12px 0 12px;
+}
+
+#main-menu-links a.active, #main-menu-links a.active-trail {
+  font-weight: normal;
+}
+
+#main-menu-search {
+  display: inline-block;
+  float: right;
+  height: 35px;
+  margin-top: 5px;
+  padding-top: 7px;
+  width: auto;
+}
+
+#main-menu-search div {
+  display: inline-block;
+}
+
+#main-menu-search div#edit-actions.form-actions.form-wrapper {
+  display: inline-block;
+  margin: 0;
+}
+
+/* Search input field */
+#main-menu-search #edit-search-block-form--2 {
+  background-image: url(../img/head-row-search-bg.gif);
+  background-position: left top;
+  background-repeat: repeat-x;
+  border: none;
+  font-size: 90%;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  width: 154px;
+}
+
+#main-menu-search #edit-actions--2 {
+  margin: 0;
+}
+
+/* Search submit button */
+#main-menu-search #edit-submit, #main-menu-search #edit-submit--2, #main-menu-search #edit-submit--3 {
+  background-image: url(../img/button-background-repeater.gif);
+  background-position: left;
+  background-repeat: repeat-x;
+  border: none;
+  color: #fff;
+  margin-top: 1px;
+  margin-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+}

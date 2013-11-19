@@ -1,0 +1,326 @@
+/*
+  Main CSS file for the DSV Drupal theme
+*/
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #fff;
+  color: #000000;
+  font: 76%/1.6 Verdana, Arial, Helvetica, sans-serif;
+  margin: 0 0 20px 0;
+}
+
+h1 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 150%;
+  font-weight: normal;
+  line-height: normal;
+}
+
+h2 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 125%;
+  font-weight: bold;
+  line-height: normal;
+  margin: 0;
+  padding-bottom: 9px;
+  color: #002e5f;
+}
+
+body #container {
+  background-image: url('../img/container-repeater.gif');
+  background-position: left top;
+  background-repeat: repeat-y;
+  min-height: 100%;
+  max-width: 994px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -94px;
+  padding-left: 7px;
+  padding-right: 7px;
+  width: inherit;
+}
+
+#container:after {
+  display: block;
+}
+
+.breadcrumb {
+  display: inline-block;
+}
+
+#breadcrumbs {
+  font-size: 80%;
+  margin-top: 3px;
+  min-height: 32px;
+  padding: 6px 0 1px 7px;
+}
+
+#breadcrumbs, #breadcrumbs a {
+  color: #A0A0A0;
+  font-style: italic;
+}
+
+#content {
+  min-height: 300px;
+}
+
+#content p {
+  margin: 0 0 1.2em;
+}
+
+#content a {
+  color: #005b7f;
+}
+
+#content a:visited {
+  color: #7d7d7d;
+}
+
+#content a:hover {
+  color: #000;
+}
+
+#main-content {
+  padding: 0 1% 0 1%;
+}
+
+.one-sidebar #main-content {
+  float: left;
+  width: 77%;
+}
+
+.two-sidebars #main-content {
+  float: left;
+  width: 54%;
+}
+
+.no-sidebars #main-content {
+  width: 100%;
+}
+
+#main-content h1 {
+  color: #002E5F;
+  margin-bottom: 13px;
+  margin-top: 0;
+  padding-top: 2px;
+}
+
+#main-content .node-unpublished {
+  background-color: #fff;
+}
+
+#main-content .required:after {
+  color: #e32;
+  content: ' *';
+  display: inline;
+}
+
+#main-content .webform-client-form fieldset {
+  margin-bottom: 15px;
+  padding: 0;
+}
+
+#main-content .webform-client-form fieldset > legend {
+  background: #dbdbdb;
+  border: 1px solid #ccc;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  font-size: 15px;
+  height: 26px;
+  margin: -1px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-topright: 4px;
+  text-indent: 10px;
+  text-shadow: 0 1px 0 #fff;
+  padding: 5px 0 0 0;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+}
+
+#main-content .webform-client-form fieldset .fieldset-wrapper {
+  padding: 0.35em 0.625em 0.75em
+}
+
+#main-content .webform-client-form .form-actions input {
+  margin-right: 10px;
+}
+
+#main-content .webform-component-fieldset input[type="text"] {
+  display: block;
+}
+
+#main-content .webform-component div > label {
+  font-weight: normal;
+}
+
+#main-content .webform-component table {
+  margin: 10px 0px;
+  width: 100%;
+}
+
+#main-content .webform-component table th {
+  background-color: rgba(0, 0, 0, 0.509804);
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 19px;
+  padding: 4px 9px;
+}
+
+#main-content .webform-component table tr.odd {
+  background-color: rgba(0, 0, 0, 0.101961);
+}
+
+#main-content .webform-component table td {
+  border: 1px solid #fff;
+  font-size: 13px;
+  line-height: 19px;
+  padding: 4px 9px;
+}
+
+#sidebar li {
+  background-image: url('../img/icon-menu-parent-2.gif');
+  background-position: 9px 10px;
+  background-repeat: no-repeat;
+}
+
+#sidebar-first {
+  float: left;
+  width: 21%;
+  padding-right: 1%;
+}
+
+#sidebar-first h2 {
+  display: none;
+}
+
+#sidebar-first a {
+  color: #005b7f;
+  text-decoration: none;
+}
+
+#sidebar-first a:visited {
+  color: #7d7d7d;
+}
+
+#sidebar-first a:hover { 
+  color: #000;
+  text-decoration: underline;
+}
+
+#sidebar-first ul {
+  padding-left: 0px;
+}
+
+#sidebar-first ul li.collapsed {
+  list-style-image: none;
+}
+
+#sidebar-first li {
+  background-image: url('../img/menu-top-level-gradient.gif');
+  border-bottom: solid 1px #fff;
+  list-style-type: none;
+  padding-top: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 5px;
+}
+
+#sidebar-first .active-trail {
+  background-image: none;
+  background-color: #002e5f;
+  font-weight: normal;
+}
+
+#sidebar-first .active-trail a, #sidebar-first .active-trail a:visited, #sidebar-first .active-trail a:hover {
+  color: #fff;
+  font-weight: bold;
+  font-size: 90%;
+}
+
+#sidebar-second {
+  display: inline-block;
+  float: right;
+  padding-left: 1%;
+  width: 21%;
+}
+
+#sidebar-second ul {
+  padding-left: 20px;
+}
+
+#sidebar-second ul li {
+  list-style: disc;
+}
+
+#sidebar-second input {
+  width: 96%;
+}
+
+#sidebar-second .block {
+  background-color: #ccd5df;
+  padding: 2px 8px 6px 8px;
+  margin-bottom: 4px;
+}
+
+#sidebar-second .block form {
+  width: 100%;
+}
+
+#sidebar-second .block h2 {
+  font-family: Verdana, Arial, Helvetica, Sans-serif;
+  font-size: 70%;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding-bottom: 2px;
+  margin: 0;
+  color: #666;
+  line-height: 16px;
+}
+
+#sidebar-second .block p {
+  font-size: 90%;
+  line-height: 165%;
+  margin-bottom: 8px;
+}
+
+#block-user-login.block.block-user {
+  background-color: #f8f8f8;
+  padding: 8px 16px;
+}
+
+#block-user-login.block.block-user .form-required {
+  color: #000;
+  margin-top: 2px;
+  margin-bottom: 1em;
+}
+
+#block-user-login.block.block-user h2 {
+  border-bottom: 1px solid #d6d6d6;
+  color: #000;
+  font-size: 1.15em;
+
+  /* Add hyphenation if we break the header into multiple rows */
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+
+  line-height: 1.2em;
+  margin: 0 0 0.5em;
+  text-transform: none;
+  padding-bottom: 5px;
+}
+
+.clear-float {
+  display: block;
+  clear: both;
+  line-height: 0;
+  font-size: 0;
+  width: 1px;
+  height: 0px;
+  visibility: hidden;
+}
