@@ -22,7 +22,7 @@ if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
   </tr>
 
   <tr>
-    <td class="prim_matrix_capability">Procedurer</td>
+    <td class="prim_matrix_capability">Procedurer<br>sid 1<br>sid 2</td>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Ep'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Cp'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Ap'])); ?>
