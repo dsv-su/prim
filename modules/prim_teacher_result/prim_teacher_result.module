@@ -96,9 +96,7 @@ function prim_teacher_result_theme($existing, $type, $theme, $path) {
 function teacher_results_access($node) {
   global $user;
 
-  if( (in_array('formuläradmin', $user->roles) || in_array('administrator', $user->roles))  ) {
-    return FALSE;
-  } else if(user_access('view teacher result tab') && $node->type == 'resultatrapport') {
+  if(user_access('view teacher result tab') && $node->type == 'resultatrapport') {
     return TRUE;
   }
   return FALSE;
@@ -139,28 +137,11 @@ function prim_teacher_result_menu() {
     'page arguments' => array(1, TRUE, '50'),
     'access callback' => 'teacher_results_access',
     'access arguments' => array(1),
-    'file' => '../../contrib/webform/includes/webform.report.inc',
-    //'file' => module_load_include('inc', 'webform', 'webform.report'), // THIS DOES NOT WORK WHYYYYY????? Works in $items['node/%webform_menu/prim-teacher-result/table']
+    'file' => 'includes/webform.report.inc',
+    'file path' => drupal_get_path('module', 'webform'),
     'weight' => 10,
     'type' => MENU_LOCAL_TASK,
   );
-/*
-  $items['node/%webform_menu/prim-teacher-result/result'] = array(
-    'title' => t('Resultat'),
-    'weight' => 1,
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-  );
-
-  $items['node/%webform_menu/prim-teacher-result/table'] = array(
-    'title' => t('Table'),
-    'page callback' => 'teacher_results_table',
-    'page arguments' => array(1, '50'),
-    'access arguments' => array('view teacher result tab'),
-    'file' => module_load_include('inc', 'webform', 'webform.report'),
-    'weight' => 2,
-    'type' => MENU_LOCAL_TASK,
-  );
-*/
   $items['node/%webform_menu/download'] = array(
     'title' => t('Download'),
     'page callback' => 'drupal_get_form',
