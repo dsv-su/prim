@@ -48,4 +48,5 @@ dependencies[] = views
 dependencies[] = views_ui
 ; Webform
 dependencies[] = webform
+dependencies[] = webform_conditional
 dependencies[] = webform_optionsmarkup

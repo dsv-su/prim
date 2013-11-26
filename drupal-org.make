@@ -40,6 +40,10 @@ projects[webform][version] = "3.19"
 projects[webform][subdir] = "contrib"
 projects[webform][type] = "module"
 
+projects[webform_conditional][version] = "1.0-beta2"
+projects[webform_conditional][subdir] = "contrib"
+projects[webform_conditional][type] = "module"
+
 projects[webform_optionsmarkup][version] = "1.0"
 projects[webform_optionsmarkup][subdir] = "contrib"
 projects[webform_optionsmarkup][type] = "module"
