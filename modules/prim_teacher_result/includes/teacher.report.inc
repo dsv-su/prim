@@ -97,8 +97,12 @@ function teacher_results_download($node, $format = 'delimited', $options = array
     if (isset($submission_information['draft'])) {
       $row[] = $submission->is_draft;
     }
-    if (isset($submission_information['ip_address'])) {
-      $row[] =  $submission->remote_addr;
+
+    // Show only IP-address to admins.
+    if((in_array('formuläradmin', $user->roles) || in_array('administrator', $user->roles))) { 
+      if (isset($submission_information['ip_address'])) {
+        $row[] =  $submission->remote_addr;
+      }
     }
     if (isset($submission_information['uid'])) {
       $row[] = $submission->uid;
