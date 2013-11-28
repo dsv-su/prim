@@ -16,7 +16,7 @@ function theme_teacher_results_submissions_header($variables) {
 
   $columns = array(
     // Edited the title of the first column
-    array('data' => t('Name'), 'field' => 'sid', 'sort' => 'desc'),
+    array('data' => t('Elevens namn'), 'field' => 'sid', 'sort' => 'desc'),
     array('data' => t('Submitted'), 'field' => 'submitted'),
   );
   if (webform_results_access($node)) {
@@ -62,7 +62,8 @@ function teacher_results_submissions($node, $user_filter, $pager_count) {
   $rows = array();
   foreach ($submissions as $sid => $submission) {
     // Set up student's name instead of submission id
-    $elevensnamn = $submission->data[125]['value'][0];
+    $fieldid = webform_get_cid($node, "elevens_namn", 2);
+    $elevensnamn = $submission->data[$fieldid]['value'][0];
     if (!$elevensnamn) {$elevensnamn = t("———");};
 
     $row = array(
