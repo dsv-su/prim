@@ -69,8 +69,11 @@ function prim_teacher_result_webform_submission_load(&$submissions){
   if (arg(0) == 'node' && arg(2) == 'prim-teacher-result'){    
     drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_teacher.js');	
   }
+  elseif (arg(0) == 'node' &&  arg(2)=='webform-results' && arg(3) == 'table'){
+    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin_fulltable.js');	
+  }
   elseif (arg(0) == 'node' &&  arg(2)=='webform-results'){
-    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');	
+    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');  
   }
 }
 
