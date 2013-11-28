@@ -86,6 +86,14 @@ function prim_teacher_result_theme($existing, $type, $theme, $path) {
     'prim_teacher_result_questions' => array(
       'variables' => array('vars'=> NULL), 
       'template' => 'prim-teacher-result-questions',
+    ),
+    'teacher_results_submissions_header' => array(
+      'variables' => array('node' => NULL),
+      'file' => 'includes/teacher.report.inc',
+    ),
+    'teacher_results_submissions' => array(
+      'variables' => array('node' => NULL, 'components' => NULL, 'submissions' => NULL, 'node' => NULL, 'total_count' => NULL, 'pager_count' => NULL),
+      'file' => 'includes/teacher.report.inc',
     )
   );
 }
@@ -133,12 +141,12 @@ function prim_teacher_result_init(){
 function prim_teacher_result_menu() {
   $items['node/%webform_menu/prim-teacher-result'] = array(
     'title' => t('Dina registreringar'),
-    'page callback' => 'teacher_results_table',
+    'page callback' => 'teacher_results_submissions',
     'page arguments' => array(1, TRUE, '50'),
     'access callback' => 'teacher_results_access',
     'access arguments' => array(1),
-    'file' => 'includes/webform.report.inc',
-    'file path' => drupal_get_path('module', 'webform'),
+    'file' => 'includes/teacher.report.inc',
+    //'file path' => drupal_get_path('module', 'webform'),
     'weight' => 10,
     'type' => MENU_LOCAL_TASK,
   );
@@ -179,6 +187,7 @@ function back_to_list($node) {
 
 /**
  * TODO: write description.
+ * This function is not used currently.
  */
 function teacher_results_table($node, $pager_count = 0) {
   global $user;
@@ -188,12 +197,12 @@ function teacher_results_table($node, $pager_count = 0) {
   }
 
   // Get all the submissions for the node for the current loged in user.
-  $header = theme('webform_results_table_header', array('node' => $node));
+  $header = theme('teacher_results_table_header', array('node' => $node));
   $submissions = webform_get_submissions(array('nid' => $node->nid, 
                                                'uid' => $user->uid), $header, $pager_count);
   $total_count = webform_get_submission_count($node->nid);
 
-  $output = theme('webform_results_table', array('node' => $node, 
+  $output = theme('teacher_results_table', array('node' => $node,
                                                  'components' => $node->webform['components'], 
                                                  'submissions' => $submissions, 
                                                  'total_count' => $total_count, 

@@ -6,10 +6,11 @@ jQuery(document).ready(function(){
 	//loop through all the tr are are not first
 	jQuery('.sticky-enabled.tableheader-processed tr:not(:first)').each(function(){
 	//find the fifth row and replace the link caption to "Visa Registering"
-	jQuery(this).find("td").eq(2).find("a").html("Visa registering");
+	//not needed anymore, we would like to bring back username
+	//jQuery(this).find("td").eq(2).find("a").html("Visa registering");
 
 	//assign its url to a variable
-	var visa_url = jQuery(this).find("td").eq(2).find("a").attr('href');
+	var visa_url = jQuery(this).find("td").eq(4).find("a").attr('href');
 	//append the matrix link to the url
 	visa_url = visa_url + '/matrix';
 	//add a matris row link in the table

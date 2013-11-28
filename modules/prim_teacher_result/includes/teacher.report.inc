@@ -1,5 +1,113 @@
 <?php
 
+// The following two functions are taken from webform module since we need to customize the submissions output
+
+/**
+ * Theme the header of the submissions table.
+ *
+ * This is done in it's own function so that webform can retrieve the header and
+ * use it for sorting the results.
+ */
+function theme_teacher_results_submissions_header($variables) {
+  drupal_get_path('module', 'webform');
+  module_load_include('inc', 'webform', 'includes/webform.submissions');
+  
+  $node = $variables['node'];
+
+  $columns = array(
+    // Edited the title of the first column
+    array('data' => t('Name'), 'field' => 'sid', 'sort' => 'desc'),
+    array('data' => t('Submitted'), 'field' => 'submitted'),
+  );
+  if (webform_results_access($node)) {
+    $columns[] = array('data' => t('User'), 'field' => 'name');
+    $columns[] = array('data' => t('IP Address'), 'field' => 'remote_addr');
+  }
+  $columns[] = array('data' => t('Operations'), 'colspan' => module_exists('print') ? 5 : 3);
+
+  return $columns;
+}
+
+/**
+ * Retrieve lists of submissions for a given webform.
+ */
+function teacher_results_submissions($node, $user_filter, $pager_count) {
+  global $user;
+
+  if (isset($_GET['results']) && is_numeric($_GET['results'])) {
+    $pager_count = $_GET['results'];
+  }
+
+  $header = theme('teacher_results_submissions_header', array('node' => $node));
+  if ($user_filter) {
+    if ($user->uid) {
+      drupal_set_title(t('Submissions for %user', array('%user' => $user->name)), PASS_THROUGH);
+    }
+    else {
+      drupal_set_title(t('Your submissions'));
+      webform_disable_page_cache();
+    }
+    webform_set_breadcrumb($node);
+    $submissions = webform_get_submissions(array('nid' => $node->nid, 'uid' => $user->uid), $header, $pager_count);
+    $count = webform_get_submission_count($node->nid, $user->uid);
+  }
+  else {
+    $submissions = webform_get_submissions($node->nid, $header, $pager_count);
+    $count = webform_get_submission_count($node->nid);
+  }
+
+  $operation_column = end($header);
+  $operation_total = $operation_column['colspan'];
+
+  $rows = array();
+  foreach ($submissions as $sid => $submission) {
+    // Set up student's name instead of submission id
+    $elevensnamn = $submission->data[125]['value'][0];
+    if (!$elevensnamn) {$elevensnamn = t("———");};
+
+    $row = array(
+      $submission->is_draft ? t('@sid (draft)', array('@sid' => $elevensnamn)) : $elevensnamn,
+      format_date($submission->submitted, 'short'),
+    );
+    if (webform_results_access($node, $user)) {
+      $row[] = theme('username', array('account' => $submission));
+      $row[] = $submission->remote_addr;
+    }
+    $row[] = l(t('View'), "node/$node->nid/submission/$sid");
+    $operation_count = 1;
+    // No need to call this multiple times, just reference this in a variable.
+    $destination = drupal_get_destination();
+    if (webform_submission_access($node, $submission, 'edit', $user)) {
+      $row[] = l(t('Edit'), "node/$node->nid/submission/$sid/edit", array('query' => $destination));
+      $operation_count++;
+    }
+    if (webform_submission_access($node, $submission, 'delete', $user)) {
+      $row[] = l(t('Delete'), "node/$node->nid/submission/$sid/delete", array('query' => $destination));
+      $operation_count++;
+    }
+    if ($operation_count < $operation_total) {
+      $row[count($row) - 1] = array('data' => $row[count($row) - 1], 'colspan' => $operation_total - $operation_count + 1);
+    }
+    $rows[] = $row;
+  }
+
+  $element['#theme'] = 'webform_results_submissions';
+  $element['#node'] = $node;
+  $element['#submissions'] = $submissions;
+  $element['#total_count'] = $count;
+  $element['#pager_count'] = $pager_count;
+  $element['#attached']['library'][] = array('webform', 'admin');
+
+  $element['table']['#theme'] = 'table';
+  $element['table']['#header'] = $header;
+  $element['table']['#rows'] = $rows;
+  $element['table']['#operation_total'] = $operation_total;
+
+  return drupal_render($element);
+
+}
+
+
 function teacher_results_download($node, $format = 'delimited', $options = array()) {
   global $user;
   module_load_include('inc', 'webform', 'includes/webform.export');
