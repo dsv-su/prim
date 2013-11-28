@@ -440,8 +440,6 @@ function student_matrix($node) {
           if($pidkey == 'extra') {
             $pidextra = unserialize($pidvalue);
             $pidcondition = explode("\n", $pidextra['webform_conditional_cid']);
-            print_r("\n".'-- $pidcondition --'."\n");
-              print_r($pidcondition);
 
             $condquery = db_select('webform_submitted_data', 'sd');
             $condquery
@@ -452,8 +450,6 @@ function student_matrix($node) {
             $condresult = $condquery->execute();
 
             foreach ($condresult as $condrow) {
-              print_r("\n".'-- $condrowdata --'."\n");
-              print_r($condrow->data);
               if ($condrow->data == 1){
                 if($key == 'extra') {
                   $extra = unserialize($value);
