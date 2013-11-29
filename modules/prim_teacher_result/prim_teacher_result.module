@@ -370,6 +370,10 @@ function student_matrix($node) {
 					}
 
 					$items = array_reverse($items);
+
+
+					$noarr = array('ingetsvar', 'ejsvar');
+					$removechar = array(' ', '.', '!');
 			
 					if ($items == NULL) {
 						$selVal = $row->data;
