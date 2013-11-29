@@ -6,8 +6,10 @@ if(count($variables['grades']['all']) > 0){
   $row_break = 5;
   foreach($variables['grades']['all'] as $key=>$value){
     $count++;
-    if(in_array($value,$variables['grades']['correct'])){
+    $index = array_search($value,$variables['grades']['correct']);
+    if($index !== False){
       $question_class = "prim_question_correct";
+      unset($variables['grades']['correct'][$index]);
 
     } elseif(in_array($value,$variables['grades']['noanswer'])){
       $question_class = "prim_question prim_empty_grade";

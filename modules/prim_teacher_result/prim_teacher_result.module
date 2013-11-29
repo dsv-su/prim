@@ -320,7 +320,21 @@ function student_matrix($node) {
 					foreach ($extraArr as $key => $value) {
 						if(!empty($value)) {
 							list($k, $v) = explode('|', $value);
-							$items[$k] = $k;
+							if (strpos($k,'+') !== false) {
+									list($k, $uk) = explode('+', $k);
+									if ($k == $uk) {
+										$k = $k.'_1';
+										$uk = $uk.'_2';
+									}
+
+									$items[$k] = $k;
+									$items[$uk] = $uk;
+
+
+							}
+							else {
+								$items[$k] = $k;
+							}
 						}
 					} // End foreach extraArr as key => value
 				
@@ -332,16 +346,39 @@ function student_matrix($node) {
 
 					foreach ($items as $key => $value) {
 						$selVal = $row->data;
-						$cleanVal = str_replace($removechar, '', strtolower($selVal));
+						if (strpos($selVal,'+') !== false) {
+									list($selVal, $uselVal) = explode('+', $selVal);
+									$cleanVal = str_replace($removechar, '', strtolower($selVal));
+									if ($selVal == $uselVal) {
+										$selVal = $selVal.'_1';
+										$uselVal = $uselVal.'_2';
+									}
 
 					
-						if(in_array($cleanVal, $noarr)) {           
-							$noanswer[$key] = $value;
-						} 
-						elseif($row->data == $key || $hasvalue) {
-							$points[$key] = $value;
-							$hasvalue = true;
+									if(in_array($cleanVal, $noarr)) {
+										$noanswer[$key] = $value;
+									}
+									elseif($selVal == $key || $uselVal == $key || $hasvalue) {
+										$points[$key] = $value;
+										$hasvalue = true;
+									}
+
+
+							}
+							else {
+							$cleanVal = str_replace($removechar, '', strtolower($selVal));
+
+					
+							if(in_array($cleanVal, $noarr)) {
+								$noanswer[$key] = $value;
+							}
+							elseif($row->data == $key || $hasvalue) {
+								$points[$key] = $value;
+								$hasvalue = true;
+							}
+
 						}
+
 						
 					}// End foreach itema as key => value
 				} 
@@ -354,14 +391,14 @@ function student_matrix($node) {
 						foreach ($extraArr as $key => $value) {
 							if(!empty($value)) {
 								list($k, $v) = explode('|', $value);
-								if (strpos($k,'_') !== false) {
-									list($l, $w) = explode('_', $k);
+								if (strpos($k,'+') !== false) {
+									list($k, $uk) = explode('+', $k);
+									$items[$k] = $k;
+									$items[$uk] = $uk;
+
 								}
 								else {
-									$l = $k;
-								}
-								if (!in_array($l, $items)) {
-									$items[$k] = $l;
+									$items[$k] = $k;
 								}
 							}
 							$items = array_reverse($items);
@@ -370,17 +407,12 @@ function student_matrix($node) {
 					}
 
 					$items = array_reverse($items);
-
-
+					
 					$noarr = array('ingetsvar', 'ejsvar');
 					$removechar = array(' ', '.', '!');
-			
 					if ($items == NULL) {
 						$selVal = $row->data;
-						if (strpos($selVal,'_') !== false) {
-							list($selVal, $unselVal) = explode('_', $selVal);
-						}
-						$items[$row->data] = $selVal;
+						$points[$selVal] = $selVal;
 					}
 
 					foreach ($items as $key => $value) {
@@ -398,6 +430,9 @@ function student_matrix($node) {
 							$noanswer[$key] = $value;
 						} 
 						elseif($selVal == $key) {
+							if (strpos($value,'_') !== false) {
+							list($value, $uvalue) = explode('_', $value);
+						}
 							$points[$key] = $value;
 						}
 					}
@@ -416,10 +451,8 @@ function student_matrix($node) {
 				print_r($selVal);
 				print_r("\n\n".'-- $points --'."\n");
 				print_r($points);
-				print_r("\n".'-- $noanswer --'."\n");
-				print_r($noanswer);
-				print_r("\n".'-- $grades --'."\n");
-				print_r($grades);*/
+				/*print_r("\n".'-- $noanswer --'."\n");
+				print_r($noanswer);*/
 
 				$grades = assign_grades($items, $question, $grades, 'all');
 				$grades = assign_grades($points, $question, $grades, 'correct');
@@ -508,13 +541,7 @@ function student_matrix($node) {
 			}
 		}
 	}
-		
-	foreach($grades as $subKey => $subArray){
-		foreach($subArray as $subsubKey => $subsubArray){
-			$subsubArray = array_unique_multidimensional($subsubArray);
-			$grades[$subKey][$subsubKey] = $subsubArray;
-		}
-	}
+
 	$grades = count_grades('E', 'all', $grades);
 	$grades = count_grades('C', 'all', $grades);
 	$grades = count_grades('A', 'all', $grades);
@@ -523,13 +550,6 @@ function student_matrix($node) {
 	$grades = count_grades('A', 'correct', $grades);
 
 	return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node));
-}
-
-function array_unique_multidimensional($input)
-{
-		$serialized = array_map('serialize', $input);
-		$unique = array_unique($serialized);
-		return array_intersect_key($input, $unique);
 }
 
 function init_grades($grades, $type) {
