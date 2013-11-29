@@ -280,220 +280,252 @@ function prim_teacher_result_form_alter(&$form,&$form_state,$form_id){
 }
 
 function student_matrix($node) {
-  drupal_add_css(drupal_get_path('module', 'prim-teacher-result') . '/css/prim-teacher-result.css', array());
+	drupal_add_css(drupal_get_path('module', 'prim-teacher-result') . '/css/prim-teacher-result.css', array());
 
-  $query = db_select('webform_component', 'c');
-  $query
-    ->join('webform_submitted_data', 'sd', 'c.cid = sd.cid AND c.nid = sd.nid AND sd.sid ='.arg(3));
-  $query
-    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
-    ->fields('sd', array('data'))
-    ->condition('c.nid', arg(1), '=')
-    ->condition('c.extra', '%prim_question";a:1:{s:5:"check";i:1;}%', 'LIKE')
-    ->orderBy('c.cid', 'ASC');
-  $result = $query->execute();
+	$query = db_select('webform_component', 'c');
+	$query
+		->join('webform_submitted_data', 'sd', 'c.cid = sd.cid AND c.nid = sd.nid AND sd.sid ='.arg(3));
+	$query
+		->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
+		->fields('sd', array('data'))
+		->condition('c.nid', arg(1), '=')
+		->condition('c.extra', '%prim_question";a:1:{s:5:"check";i:1;}%', 'LIKE')
+		->orderBy('c.cid', 'ASC');
+	$result = $query->execute();
 
-  $grades = array();
-  $grades = init_grades($grades, 'all');
-  $grades = init_grades($grades, 'correct');
-  $grades = init_grades($grades, 'noanswer');
-  $multiformkey = array();
+	$grades = array();
+	$grades = init_grades($grades, 'all');
+	$grades = init_grades($grades, 'correct');
+	$grades = init_grades($grades, 'noanswer');
+	$multiformkey = array();
 
-  foreach ($result as $row) {
-    $question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
+	foreach ($result as $row) {
+		$question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
 
-    foreach ($row as $key => $value) {
-      if($key == 'extra') {
-        $extra = unserialize($value);
-        $extraArr = explode("\n", $extra['items']);
-        $multipleArr = explode("\n", $extra['multiple']);
+		foreach ($row as $key => $value) {
+			if($key == 'extra') {
+				$extra = unserialize($value);
+				$extraArr = explode("\n", $extra['items']);
 
-        $items = array();
-        $points = array();
-        $noanswer = array();
-        $selected = false;
-        $hasvalue = false;
+				$multipleArr = explode("\n", $extra['multiple']);
 
-        if (!$multipleArr == 1) {
+				$items = array();
+				$points = array();
+				$noanswer = array();
+				$selected = false;
+				$hasvalue = false;
 
-          foreach ($extraArr as $key => $value) {
-            if(!empty($value)) {
-              list($k, $v) = explode('|', $value);
-              $items[$k] = $k;
-            }
-          } // End foreach extraArr as key => value
-        
-          $items = array_reverse($items);
+				if ($multipleArr[0] == 0) {
 
-          $noarr = array('ingetsvar', 'ejsvar');
-          $removechar = array(' ', '.', '!');
+					foreach ($extraArr as $key => $value) {
+						if(!empty($value)) {
+							list($k, $v) = explode('|', $value);
+							$items[$k] = $k;
+						}
+					} // End foreach extraArr as key => value
+				
+					$items = array_reverse($items);
 
-
-          foreach ($items as $key => $value) {
-            $selVal = $row->data;
-            $cleanVal = str_replace($removechar, '', strtolower($selVal));
-
-          
-            if(in_array($cleanVal, $noarr)) {           
-              $noanswer[$key] = $value;
-            } 
-            elseif($row->data == $key || $hasvalue) {
-              $points[$key] = $value;
-              $hasvalue = true;
-            }
-            
-          }// End foreach itema as key => value
-        } 
-        else {
-          if (in_array( $row->form_key, $multiformkey)) {
-            
-
-          }
-          else {
-            foreach ($extraArr as $key => $value) {
-              if(!empty($value)) {
-                list($k, $v) = explode('|', $value);
-        if (strpos($k,'_') !== false) {
-          list($l, $w) = explode('_', $k);
-        }
-        else {
-          $l = $k;
-        }
-        if (!in_array($l, $items)) {
-          $items[$k] = $l;
-        }
-              }
-              $items = array_reverse($items);
-            } // End foreach extraArr as key => value
-            $multiformkey[] = $row->form_key;
-          }
-
-          $noarr = array('ingetsvar', 'ejsvar');
-          $removechar = array(' ', '.', '!');
+					$noarr = array('ingetsvar', 'ejsvar');
+					$removechar = array(' ', '.', '!');
 
 
-          foreach ($items as $key => $value) {
-            $selVal = $row->data;
-            $cleanVal = str_replace($removechar, '', strtolower($selVal));
+					foreach ($items as $key => $value) {
+						$selVal = $row->data;
+						$cleanVal = str_replace($removechar, '', strtolower($selVal));
 
-          
-            if(in_array($cleanVal, $noarr)) {           
-              $noanswer[$key] = $value;
-            } 
-            elseif($row->data == $key || $hasvalue) {
-              $points[$key] = $value;
-              $hasvalue = true;
-            }
-            
-          }// End foreach itema as key => value
+					
+						if(in_array($cleanVal, $noarr)) {           
+							$noanswer[$key] = $value;
+						} 
+						elseif($row->data == $key || $hasvalue) {
+							$points[$key] = $value;
+							$hasvalue = true;
+						}
+						
+					}// End foreach itema as key => value
+				} 
+				elseif ($multipleArr[0] == 1) {
+					if (in_array( $row->form_key, $multiformkey)) {
+						
 
-        }
-        
-        // DEBUG
-        /*print_r("\n".'#- $items ---------#'."\n");
-        print_r($items);
-        print_r("\n".'-- $row->data --'."\n");
-        print_r($row->data);        
-        print_r("\n\n".'-- $points --'."\n");
-        print_r($points);
-        print_r("\n".'-- $noanswer --'."\n");
-        print_r($noanswer);*/
+					}
+					else {
+						foreach ($extraArr as $key => $value) {
+							if(!empty($value)) {
+								list($k, $v) = explode('|', $value);
+								if (strpos($k,'_') !== false) {
+									list($l, $w) = explode('_', $k);
+								}
+								else {
+									$l = $k;
+								}
+								if (!in_array($l, $items)) {
+									$items[$k] = $l;
+								}
+							}
+							$items = array_reverse($items);
+						} // End foreach extraArr as key => value
+						$multiformkey[] = $row->form_key;
+					}
 
-        $grades = assign_grades($items, $question, $grades, 'all');
-        $grades = assign_grades($points, $question, $grades, 'correct');
-        $grades = assign_grades($noanswer, $question, $grades, 'noanswer');
+					$items = array_reverse($items);
+			
+					if ($items == NULL) {
+						$selVal = $row->data;
+						if (strpos($selVal,'_') !== false) {
+							list($selVal, $unselVal) = explode('_', $selVal);
+						}
+						$items[$row->data] = $selVal;
+					}
 
-      } // End if key equals 'extra'
-    } // End foreach row key
-  } // End foreach result as row
-  
+					foreach ($items as $key => $value) {
+						$selVal = $row->data;
+						if (strpos($selVal,'_') !== false) {
+							list($selVal, $unselVal) = explode('_', $selVal);
+						}
+						$cleanVal = str_replace($removechar, '', strtolower($selVal));
+
+						if (strpos($key,'_') !== false) {
+							list($key, $unselkey) = explode('_', $key);
+						}
+
+						if(in_array($cleanVal, $noarr)) {           
+							$noanswer[$key] = $value;
+						} 
+						elseif($selVal == $key) {
+							$points[$key] = $value;
+						}
+					}
+						
+				}// End foreach itema as key => value
+				// DEBUG
+				/*print_r("\n".'#- $question ---------#'."\n");
+				print_r($question);
+				print_r("\n\n".'-- $multiformArr --'."\n");
+				print_r($multipleArr);
+				print_r("\n".'#- $items ---------#'."\n");
+				print_r($items);
+				print_r("\n".'-- $row->data --'."\n");
+				print_r($row->data);   
+				print_r("\n".'-- $selVal --'."\n");
+				print_r($selVal);
+				print_r("\n\n".'-- $points --'."\n");
+				print_r($points);
+				print_r("\n".'-- $noanswer --'."\n");
+				print_r($noanswer);
+				print_r("\n".'-- $grades --'."\n");
+				print_r($grades);*/
+
+				$grades = assign_grades($items, $question, $grades, 'all');
+				$grades = assign_grades($points, $question, $grades, 'correct');
+				$grades = assign_grades($noanswer, $question, $grades, 'noanswer');
+
+			} // End if key equals 'extra'
+		} // End foreach row key
+	} // End foreach result as row
+	
+
 //Check for checkboxes which have no values selected
-  $cidquery = db_select('webform_submitted_data', 'sd');
-  $cidquery
-    ->fields('sd', array('cid'))
-    ->condition('sd.nid', arg(1), '=')
-    ->condition('sd.sid', arg(3), '=')
-    ->orderBy('sd.cid', 'ASC');
-  $cidresult = $cidquery->execute();
+	$cidquery = db_select('webform_submitted_data', 'sd');
+	$cidquery
+		->fields('sd', array('cid'))
+		->condition('sd.nid', arg(1), '=')
+		->condition('sd.sid', arg(3), '=')
+		->orderBy('sd.cid', 'ASC');
+	$cidresult = $cidquery->execute();
 
-  $multiquery = db_select('webform_component', 'c');
-  $multiquery
-    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
-    ->condition('c.nid', arg(1), '=')
-    ->condition('c.cid', $cidquery, 'NOT IN')
-  ->condition('c.type', 'select', '=')
-    ->orderBy('c.cid', 'ASC');
-  $multiresult = $multiquery->execute();
-    
-  foreach ($multiresult as $row) {
-    $question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
-    foreach ($row as $key => $value) {
-      $pidquery = db_select('webform_component', 'c');
-      $pidquery
-        ->fields('c', array('extra'))
-        ->condition('c.cid', $row->pid, '=')
-        ->condition('c.nid', arg(1), '=');
-      $pidresult = $pidquery->execute();
+	$multiquery = db_select('webform_component', 'c');
+	$multiquery
+		->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
+		->condition('c.nid', arg(1), '=')
+		->condition('c.cid', $cidquery, 'NOT IN')
+		->condition('c.type', 'select', '=')
+		->orderBy('c.cid', 'ASC');
+	$multiresult = $multiquery->execute();
+		
+	foreach ($multiresult as $row) {
+		$question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
+		foreach ($row as $key => $value) {
+			$pidquery = db_select('webform_component', 'c');
+			$pidquery
+				->fields('c', array('extra'))
+				->condition('c.cid', $row->pid, '=')
+				->condition('c.nid', arg(1), '=');
+			$pidresult = $pidquery->execute();
 
-      foreach ($pidresult as $pidrow) {
-        foreach ($pidrow as $pidkey => $pidvalue) {
-          if($pidkey == 'extra') {
-            $pidextra = unserialize($pidvalue);
-            $pidcondition = explode("\n", $pidextra['webform_conditional_cid']);
+			foreach ($pidresult as $pidrow) {
+				foreach ($pidrow as $pidkey => $pidvalue) {
+					if($pidkey == 'extra') {
+						$pidextra = unserialize($pidvalue);
+						$pidcondition = explode("\n", $pidextra['webform_conditional_cid']);
 
-            $condquery = db_select('webform_submitted_data', 'sd');
-            $condquery
-              ->fields('sd', array('data'))
-              ->condition('sd.cid', $pidcondition, '=')
-              ->condition('sd.nid', arg(1), '=')
-              ->condition('sd.sid', arg(3), '=');
-            $condresult = $condquery->execute();
+						$condquery = db_select('webform_submitted_data', 'sd');
+						$condquery
+							->fields('sd', array('data'))
+							->condition('sd.cid', $pidcondition, '=')
+							->condition('sd.nid', arg(1), '=')
+							->condition('sd.sid', arg(3), '=');
+						$condresult = $condquery->execute();
 
-            foreach ($condresult as $condrow) {
-              if ($condrow->data == 1){
-                if($key == 'extra') {
-                  $extra = unserialize($value);
-                  $extraArr = explode("\n", $extra['items']);
+						foreach ($condresult as $condrow) {
+							if ($condrow->data == 1){
+								if($key == 'extra') {
+									$extra = unserialize($value);
+									$extraArr = explode("\n", $extra['items']);
 
-                  $items = array();
-                  $noanswer = array();
-                  $selected = false;
-                  $hasvalue = false;
+									$items = array();
+									$noanswer = array();
+									$selected = false;
+									$hasvalue = false;
 
-                  foreach ($extraArr as $key => $value) {
-                    if(!empty($value)) {
-                      list($k, $v) = explode('|', $value);
-                      if (strpos($k,'_') !== false) {
-                        list($l, $w) = explode('_', $k);
-                      }
-                      else {
-                        $l = $k;
-                      }
-                      if (!in_array($l, $items)) {
-                        $items[$k] = $l;
-                      }
-                    }
-                    $items = array_reverse($items);
-                  } // End foreach extraArr as key => value
+									foreach ($extraArr as $key => $value) {
+										if(!empty($value)) {
+											list($k, $v) = explode('|', $value);
+											if (strpos($k,'_') !== false) {
+												list($l, $w) = explode('_', $k);
+											}
+											else {
+												$l = $k;
+											}
+											if (!in_array($l, $items)) {
+												$items[$k] = $l;
+											}
+										}
+										$items = array_reverse($items);
+									} // End foreach extraArr as key => value
 
-                  $grades = assign_grades($items, $question, $grades, 'all');
-                }
-              }
-            }         
-          }
-        }
-      }
-    }
-  }
+									$grades = assign_grades($items, $question, $grades, 'all');
+								}
+							}
+						}         
+					}
+				}
+			}
+		}
+	}
+		
+	foreach($grades as $subKey => $subArray){
+		foreach($subArray as $subsubKey => $subsubArray){
+			$subsubArray = array_unique_multidimensional($subsubArray);
+			$grades[$subKey][$subsubKey] = $subsubArray;
+		}
+	}
+	$grades = count_grades('E', 'all', $grades);
+	$grades = count_grades('C', 'all', $grades);
+	$grades = count_grades('A', 'all', $grades);
+	$grades = count_grades('E', 'correct', $grades);
+	$grades = count_grades('C', 'correct', $grades);
+	$grades = count_grades('A', 'correct', $grades);
 
-  $grades = count_grades('E', 'all', $grades);
-  $grades = count_grades('C', 'all', $grades);
-  $grades = count_grades('A', 'all', $grades);
-  $grades = count_grades('E', 'correct', $grades);
-  $grades = count_grades('C', 'correct', $grades);
-  $grades = count_grades('A', 'correct', $grades);
+	return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node));
+}
 
-  return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node));
+function array_unique_multidimensional($input)
+{
+		$serialized = array_map('serialize', $input);
+		$unique = array_unique($serialized);
+		return array_intersect_key($input, $unique);
 }
 
 function init_grades($grades, $type) {
