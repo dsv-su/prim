@@ -525,7 +525,7 @@ function student_matrix($node) {
                       else {
                         $l = $k;
                       }
-                      if (!in_array($l, $items)) {
+                      if (!in_array($k, $items)) {
                         $items[$k] = $l;
                       }
                     }
