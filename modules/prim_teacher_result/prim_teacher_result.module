@@ -300,7 +300,7 @@ function student_matrix($node) {
   $multiformkey = array();
 
   foreach ($result as $row) {
-    $question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
+    $question = trim(str_replace('uppgift', '', $row->name), ' ');
 
     foreach ($row as $key => $value) {
       if($key == 'extra') {
