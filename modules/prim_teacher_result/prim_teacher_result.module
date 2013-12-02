@@ -299,11 +299,38 @@ function student_matrix($node) {
   $grades = init_grades($grades, 'correct');
   $grades = init_grades($grades, 'noanswer');
   $multiformkey = array();
+  
+  $cidquery = db_select('webform_submitted_data', 'sd');
+  $cidquery
+    ->fields('sd', array('cid'))
+    ->condition('sd.nid', arg(1), '=')
+    ->condition('sd.sid', arg(3), '=')
+    ->orderBy('sd.cid', 'ASC');
+  $cidresult = $cidquery->execute();
+
+  $multiquery = db_select('webform_component', 'c');
+  $multiquery
+    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
+    ->condition('c.nid', arg(1), '=')
+    ->condition('c.cid', $cidquery, 'NOT IN')
+    ->condition('c.type', 'select', '=')
+    ->orderBy('c.cid', 'ASC');
+  $multiresult = $multiquery->execute();
+
+
+  $grades = array();
+  $grades = init_grades($grades, 'all');
+  $grades = init_grades($grades, 'correct');
+  $grades = init_grades($grades, 'noanswer');
+  $multiformkey = array();
 
   if ($row = $result->fetch()){
     $noresult = False;
   }
-  else {
+  elseif ($row = $multiresult->fetch()){
+    $noresult = False;
+  }
+  else{
     $query = db_select('webform_component', 'c');
     $query
       ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
@@ -494,24 +521,7 @@ function student_matrix($node) {
   } // End foreach result as row
   
 
-  //Check for checkboxes which have no values selected
-  $cidquery = db_select('webform_submitted_data', 'sd');
-  $cidquery
-    ->fields('sd', array('cid'))
-    ->condition('sd.nid', arg(1), '=')
-    ->condition('sd.sid', arg(3), '=')
-    ->orderBy('sd.cid', 'ASC');
-  $cidresult = $cidquery->execute();
-
-  $multiquery = db_select('webform_component', 'c');
-  $multiquery
-    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
-    ->condition('c.nid', arg(1), '=')
-    ->condition('c.cid', $cidquery, 'NOT IN')
-    ->condition('c.type', 'select', '=')
-    ->orderBy('c.cid', 'ASC');
-  $multiresult = $multiquery->execute();
-    
+  //Check for checkboxes which have no values selected  
   foreach ($multiresult as $row) {
     $question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
     foreach ($row as $key => $value) {
