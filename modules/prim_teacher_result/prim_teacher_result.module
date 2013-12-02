@@ -523,7 +523,7 @@ function student_matrix($node) {
 
   //Check for checkboxes which have no values selected  
   foreach ($multiresult as $row) {
-    $question = trim(str_replace('uppgift', '', strtolower($row->name)), ' ');
+    $question = trim(str_replace('uppgift', '', $row->name), ' ');
     foreach ($row as $key => $value) {
       $pidquery = db_select('webform_component', 'c');
       $pidquery
