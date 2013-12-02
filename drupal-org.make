@@ -70,4 +70,10 @@ libraries[dompdf][destination] = "libraries"
 libraries[dompdf][download][type] = "git"
 libraries[dompdf][download][url] = "https://github.com/dompdf/dompdf"
 
+libraries[php-font-lib][directory_name] = "php-font-lib"
+libraries[php-font-lib][type] = "library"
+libraries[php-font-lib][destination] = "libraries/dompdf/lib"
+libraries[php-font-lib][download][type] = "git"
+libraries[php-font-lib][download][url] = "https://github.com/PhenX/php-font-lib"
+
 ; Patches
