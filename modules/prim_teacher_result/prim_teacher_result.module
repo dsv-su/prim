@@ -300,7 +300,7 @@ function student_matrix($node) {
   $grades = init_grades($grades, 'noanswer');
   $multiformkey = array();
 
-  if ($row = $query->fetch()){
+  if ($row = $result->fetch()){
     $noresult = False;
   }
   else {
