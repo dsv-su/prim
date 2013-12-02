@@ -570,6 +570,10 @@ function init_grades($grades, $type) {
 function assign_grades($items, $question, $grades, $type) {
   $grade_chars = array('A', 'C', 'E');
 
+  if (strpos($value,'_') !== false) {
+      list($value, $uvalue) = explode('_', $value);
+      }
+
   foreach($items as $value) {
     foreach ($grade_chars as $g) {
       switch($value){
