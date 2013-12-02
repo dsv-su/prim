@@ -299,19 +299,22 @@ function student_matrix($node) {
   $grades = init_grades($grades, 'correct');
   $grades = init_grades($grades, 'noanswer');
   $multiformkey = array();
-  $noresult = False;
-  
-  if (!isset($result)){
-  $query = db_select('webform_component', 'c');
-  $query
-    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
-    ->condition('c.nid', arg(1), '=')
-    ->condition('c.extra', '%prim_question";a:1:{s:5:"check";i:1;}%', 'LIKE')
-    ->orderBy('c.cid', 'ASC');
-  $result = $query->execute();
-  
-  $noresult = True;
+
+  if ($row = $query->fetch()){
+    $noresult = False;
   }
+  else {
+    $query = db_select('webform_component', 'c');
+    $query
+      ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
+      ->condition('c.nid', arg(1), '=')
+      ->condition('c.extra', '%prim_question";a:1:{s:5:"check";i:1;}%', 'LIKE')
+      ->orderBy('c.cid', 'ASC');
+    $result = $query->execute();
+  
+    $noresult = True;
+  }
+
   foreach ($result as $row) {
     $question = trim(str_replace('uppgift', '', $row->name), ' ');
 
