@@ -301,7 +301,7 @@ function student_matrix($node) {
   $multiformkey = array();
   $noresult = False;
   
-  if (!isset($results)){
+  if (!isset($result)){
   $query = db_select('webform_component', 'c');
   $query
     ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
