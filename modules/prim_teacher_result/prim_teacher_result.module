@@ -66,11 +66,11 @@ function prim_teacher_result_menu_alter(&$items){
 */
 function prim_teacher_result_webform_submission_load(&$submissions){
   //adds a jquery file that tweaks the submissions result table
-  if (arg(0) == 'node' &&  arg(2)=='webform-results' && arg(3) == 'table'){
-    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');	
-  }
-  elseif (arg(0) == 'node' &&  (arg(2)=='webform-results' || arg(2)=='prim-teacher-result')) {
+  if (arg(0) == 'node' && arg(2) == 'prim-teacher-result'){    
     drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_teacher.js');  
+  }
+  elseif (arg(0) == 'node' &&  arg(2)=='webform-results'){
+    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');  
   }
 }
 
@@ -293,12 +293,25 @@ function student_matrix($node) {
     ->orderBy('c.cid', 'ASC');
   $result = $query->execute();
 
+
   $grades = array();
   $grades = init_grades($grades, 'all');
   $grades = init_grades($grades, 'correct');
   $grades = init_grades($grades, 'noanswer');
   $multiformkey = array();
-
+  $noresult = False;
+  
+  if (!isset($results)){
+  $query = db_select('webform_component', 'c');
+  $query
+    ->fields('c', array('nid', 'cid', 'pid', 'name','form_key', 'type', 'extra'))
+    ->condition('c.nid', arg(1), '=')
+    ->condition('c.extra', '%prim_question";a:1:{s:5:"check";i:1;}%', 'LIKE')
+    ->orderBy('c.cid', 'ASC');
+  $result = $query->execute();
+  
+  $noresult = True;
+  }
   foreach ($result as $row) {
     $question = trim(str_replace('uppgift', '', $row->name), ' ');
 
@@ -345,7 +358,12 @@ function student_matrix($node) {
 
 
           foreach ($items as $key => $value) {
-            $selVal = $row->data;
+            if ($noresult == True) {
+              $selVal = '';
+            }
+            else {
+              $selVal = $row->data;
+            }
             if (strpos($selVal,'+') !== false) {
                   list($selVal, $uselVal) = explode('+', $selVal);
                   $cleanVal = str_replace($removechar, '', strtolower($selVal));
@@ -372,7 +390,7 @@ function student_matrix($node) {
               if(in_array($cleanVal, $noarr)) {
                 $noanswer[$key] = $value;
               }
-              elseif($row->data == $key || $hasvalue) {
+              elseif($selVal == $key || $hasvalue) {
                 $points[$key] = $value;
                 $hasvalue = true;
               }
@@ -411,12 +429,22 @@ function student_matrix($node) {
           $noarr = array('ingetsvar', 'ejsvar');
           $removechar = array(' ', '.', '!');
           if ($items == NULL) {
-            $selVal = $row->data;
+            if ($noresult == True) {
+              $selVal = '';
+            }
+            else {
+              $selVal = $row->data;
+            }
             $points[$selVal] = $selVal;
           }
 
           foreach ($items as $key => $value) {
-            $selVal = $row->data;
+            if ($noresult == True) {
+              $selVal = '';
+            }
+            else {
+              $selVal = $row->data;
+            }
             if (strpos($selVal,'_') !== false) {
               list($selVal, $unselVal) = explode('_', $selVal);
             }
@@ -451,7 +479,7 @@ function student_matrix($node) {
         print_r($selVal);
         print_r("\n\n".'-- $points --'."\n");
         print_r($points);
-        /*print_r("\n".'-- $noanswer --'."\n");
+        print_r("\n".'-- $noanswer --'."\n");
         print_r($noanswer);*/
 
         $grades = assign_grades($items, $question, $grades, 'all');
@@ -463,7 +491,7 @@ function student_matrix($node) {
   } // End foreach result as row
   
 
-//Check for checkboxes which have no values selected
+  //Check for checkboxes which have no values selected
   $cidquery = db_select('webform_submitted_data', 'sd');
   $cidquery
     ->fields('sd', array('cid'))
@@ -531,7 +559,6 @@ function student_matrix($node) {
                     }
                     $items = array_reverse($items);
                   } // End foreach extraArr as key => value
-
                   $grades = assign_grades($items, $question, $grades, 'all');
                 }
               }
@@ -540,6 +567,7 @@ function student_matrix($node) {
         }
       }
     }
+
   }
 
   $grades = count_grades('E', 'all', $grades);
@@ -571,9 +599,9 @@ function assign_grades($items, $question, $grades, $type) {
   $grade_chars = array('A', 'C', 'E');
 
   foreach($items as $value) {
-    if (strpos($value,'_') !== false) {
+  if (strpos($value,'_') !== false) {
       list($value, $uvalue) = explode('_', $value);
-    }
+      }
     foreach ($grade_chars as $g) {
       switch($value){
         case $g.'b':
