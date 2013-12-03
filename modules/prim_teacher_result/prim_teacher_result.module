@@ -369,6 +369,7 @@ function question_answered($points, $cid, $nid, $sid, $multipleArr, $items){
 
   foreach ($result as $row) {
     $selVal = $row->data;
+    $uselVal = '';
     if ($multipleArr[0] == 0) {
       foreach ($items as $key => $value) {
         $cleanVal = str_replace($removechar, '', strtolower($selVal));
@@ -376,15 +377,17 @@ function question_answered($points, $cid, $nid, $sid, $multipleArr, $items){
           list($selVal, $uselVal) = explode('+', $selVal);
           if ($selVal == $uselVal) {
             $selVal = $selVal.'_2';
+            $uselVal = $uselVal.'_1';
           }
         }
         if(in_array($cleanVal, $noarr)) {
           $noanswer[$key] = $value;
         }
-        elseif($selVal == $key || $hasvalue) {
+        elseif($selVal == $key || $uselVal == $key || $hasvalue) {
           $points[$key] = $value;
           $hasvalue = true;
         }
+
       }// End foreach itema as key => value
     }
     elseif ($multipleArr[0] == 1) {
