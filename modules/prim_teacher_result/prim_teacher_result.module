@@ -309,6 +309,8 @@ function student_matrix($node) {
   else {
     //Fill in required question fields
     $grades = build_questions($grades, $isconditional, arg(1));
+    $isconditional = check_for_conditional(arg(1), arg(3), FALSE); //Fills in all fields
+    $grades = build_questions($grades, $isconditional, arg(1));
   }
   $grades = count_grades('E', 'all', $grades);
   $grades = count_grades('C', 'all', $grades);
