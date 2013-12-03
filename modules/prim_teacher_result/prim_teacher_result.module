@@ -66,11 +66,20 @@ function prim_teacher_result_menu_alter(&$items){
 */
 function prim_teacher_result_webform_submission_load(&$submissions){
   //adds a jquery file that tweaks the submissions result table
-  if (arg(0) == 'node' && arg(2) == 'prim-teacher-result'){    
-    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_teacher.js');  
-  }
-  elseif (arg(0) == 'node' &&  arg(2)=='webform-results'){
-    drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');  
+  global $user;
+
+  if (in_array('authenticated user', $user->roles) && is_prim_teacher()) {
+      //this is a teacher, so anvandare name and ip address are not visible
+      if (arg(0) == 'node' &&  arg(2)=='prim-teacher-result'){
+        drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_teacher.js');  
+      }
+  } else {
+      if (arg(0) == 'node' &&  arg(2)=='webform-results' && arg(3) == 'table'){
+        drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin_detailed.js');
+      }
+      elseif (arg(0) == 'node' &&  (arg(2)=='webform-results' || arg(2)=='prim-teacher-result')) {
+        drupal_add_js(drupal_get_path('module','prim_teacher_result').'/js/prim_results_table_tweaks_admin.js');
+      }
   }
 }
 

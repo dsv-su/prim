@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 	//jQuery(this).find("td").eq(2).find("a").html("Visa registering");
 
 	//assign its url to a variable
-	var visa_url = jQuery(this).find("td").eq(4).find("a").attr('href');
+	var visa_url = jQuery(this).find("td").eq(0).find("a").attr('href');
 	//append the matrix link to the url
 	visa_url = visa_url + '/matrix';
 	//add a matris row link in the table
