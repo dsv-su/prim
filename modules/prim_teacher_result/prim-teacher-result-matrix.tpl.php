@@ -1,9 +1,9 @@
 <?php
 // Remove print pdf link from pdf file. 
 // Do not show link if print module is not installed.
-/*if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
+if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
   print print_pdf_insert_link(); 
-}*/
+}
 ?>
 
 <table class="prim_matrix">
