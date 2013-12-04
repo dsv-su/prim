@@ -5,10 +5,9 @@ if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
   print print_pdf_insert_link(); 
 }
 ?>
-
 <table class="prim_matrix">
   <tr>
-    <td class="prim_matrix_title"></td>
+    <td class="prim_matrix_title"><?php print $elevensnamn; ?></td>
     <td class="prim_matrix_title">E</td>
     <td class="prim_matrix_title">C</td>
     <td class="prim_matrix_title">A</td>
@@ -22,7 +21,7 @@ if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
   </tr>
 
   <tr>
-    <td class="prim_matrix_capability">Procedurer</td>
+    <td class="prim_matrix_capability">Procedur</td>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Ep'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Cp'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Ap'])); ?>
@@ -36,14 +35,14 @@ if(in_array('print_pdf', module_list()) && arg(0) != 'printpdf') {
   </tr>
 
   <tr>
-    <td class="prim_matrix_capability">Matematiska modeller</td>
+    <td class="prim_matrix_capability">Modellering</td>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Em'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Cm'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Am'])); ?>
   </tr>
 
   <tr>
-    <td class="prim_matrix_capability">Matematiska resonemang</td>
+    <td class="prim_matrix_capability">Resonemang</td>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Er'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Cr'])); ?>
 <?php print theme('prim_teacher_result_questions',array('grades'=>$variables['grades']['Ar'])); ?>
@@ -90,4 +89,3 @@ if(isset($variables['node']->field_matrix_info['und'][0]['safe_value'])) {
 
 <h2 class="prim_comments_header">Eventuella kommentarer </h2>
 <div class="prim_comments"></div>
-

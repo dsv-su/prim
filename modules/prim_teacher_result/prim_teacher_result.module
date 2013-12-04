@@ -318,7 +318,31 @@ function student_matrix($node) {
   $grades = count_grades('E', 'correct', $grades);
   $grades = count_grades('C', 'correct', $grades);
   $grades = count_grades('A', 'correct', $grades);
-  return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node));
+  
+  $elevensnamn = get_student_name(arg(1),arg(3));
+  return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node, 'elevensnamn'=>$elevensnamn));
+}
+
+function get_student_name($nid, $sid){
+  $query = db_select('webform_component', 'c');
+  $query
+    ->join('webform_submitted_data', 'sd', 'c.cid = sd.cid AND c.nid = sd.nid AND sd.sid ='.$sid);
+  $query
+    ->fields('c', array('cid'))
+    ->fields('sd', array('data'))
+    ->condition('c.nid', $nid, '=')
+    ->condition('c.form_key', 'elevens_namn', '=')
+    ->orderBy('c.cid', 'ASC');
+  $result = $query->execute();
+
+  foreach ($result as $row) {
+    $elevensnamn = $row->data;
+    if (!$elevensnamn) {
+      $elevensnamn = t($sid);
+    }
+
+  }
+  return $elevensnamn;
 }
 
 function build_questions($grades, $condvals, $nid){
