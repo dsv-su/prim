@@ -307,9 +307,11 @@ function student_matrix($node) {
   }
   //If there are active Questions
   else {
-    //Fill in required question fields
+    //Fill in required question fields and determine if they are correct or not
     $grades = build_questions($grades, $isconditional, arg(1));
-    $isconditional = check_for_conditional(arg(1), arg(3), FALSE); //Fills in all fields
+
+    //Fills in all fields that are not active as we must show all regardless
+    $isconditional = check_for_conditional(arg(1), arg(3), FALSE);
     $grades = build_questions($grades, $isconditional, arg(1));
   }
   $grades = count_grades('E', 'all', $grades);
@@ -319,10 +321,14 @@ function student_matrix($node) {
   $grades = count_grades('C', 'correct', $grades);
   $grades = count_grades('A', 'correct', $grades);
   
-  $elevensnamn = get_student_name(arg(1),arg(3));
+  //Find out Student Names value
+  $elevensnamn = get_student_name(arg(1),arg(3)); 
+
+  //Theme the Matrix with the previously worked out values
   return theme('prim_teacher_result_matrix',array('grades'=>$grades, 'node'=>$node, 'elevensnamn'=>$elevensnamn));
 }
 
+//Find out the student name of the specific page
 function get_student_name($nid, $sid){
   $query = db_select('webform_component', 'c');
   $query
@@ -345,6 +351,7 @@ function get_student_name($nid, $sid){
   return $elevensnamn;
 }
 
+//Works out if a question is correct or not. Adds value to the respective areas.
 function build_questions($grades, $condvals, $nid){
 
   foreach ($condvals as $pid){
@@ -375,11 +382,14 @@ function build_questions($grades, $condvals, $nid){
               $items = item_cleaner($items, $value);
             } 
           } // End foreach extraArr as key => value
-          $items = array_reverse($items); 
+          $items = array_reverse($items);
 
+          //Find out if the question has been answered correctly
           $points = question_answered($points, $row->cid, arg(1), arg(3), $multipleArr, $items);
 
+          //Fill all questions into the grades - all array
           $grades = assign_grades($items, $question, $grades, 'all');
+          //Fill all correct questions into the grades - correct5 array
           $grades = assign_grades($points, $question, $grades, 'correct');
           //$grades = assign_grades($noanswer, $question, $grades, 'noanswer');
         }
@@ -432,7 +442,7 @@ function question_answered($points, $cid, $nid, $sid, $multipleArr, $items){
   return $points;
 }
 
-//Clean up all the webform key values
+//Clean up all the webform key values in the arrays
 function item_cleaner($items, $value){
   if (strpos($value, '|') !== false) {
     list($k, $v) = explode('|', $value);
