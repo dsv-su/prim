@@ -4,11 +4,11 @@ api = "2"
 
 ; Modules
 
-projects[ctools][version] = "1.3"
+projects[ctools][version] = "1.4"
 projects[ctools][subdir] = "contrib"
 projects[ctools][type] = "module"
 
-projects[date][version] = "2.6"
+projects[date][version] = "2.7"
 projects[date][subdir] = "contrib"
 projects[date][type] = "module"
 
@@ -16,7 +16,7 @@ projects[node_clone][version] = "1.0-rc1"
 projects[node_clone][subdir] = "contrib"
 projects[node_clone][type] = "module"
 
-projects[options_element][version] = "1.9"
+projects[options_element][version] = "1.10"
 projects[options_element][subdir] = "contrib"
 projects[options_element][type] = "module"
 
@@ -36,7 +36,7 @@ projects[references][version] = "2.1"
 projects[references][subdir] = "contrib"
 projects[references][type] = "module"
 
-projects[webform][version] = "3.19"
+projects[webform][version] = "3.20"
 projects[webform][subdir] = "contrib"
 projects[webform][type] = "module"
 
@@ -52,7 +52,7 @@ projects[views][version] = "3.7"
 projects[views][subdir] = "contrib"
 projects[views][type] = "module"
 
-projects[nodeaccess][version] = "1.0"
+projects[nodeaccess][version] = "1.3"
 projects[nodeaccess][subdir] = "contrib"
 projects[nodeaccess][type] = "module"
 
