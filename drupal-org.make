@@ -36,7 +36,7 @@ projects[references][version] = "2.1"
 projects[references][subdir] = "contrib"
 projects[references][type] = "module"
 
-projects[webform][version] = "3.20"
+projects[webform][version] = "3.19"
 projects[webform][subdir] = "contrib"
 projects[webform][type] = "module"
 
